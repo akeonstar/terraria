@@ -1,0 +1,7 @@
+
+{{ ansible_managed }}
+
+## Terraria Server config
+{% for key, value in terraria_config.items() %}
+{{ key }}={{ value }}
+{% endfor %}

@@ -1,0 +1,85 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  vars:
+
+    ### Terraria Host config Vars
+    terraria_user: tserve
+    terraria_version: 1404
+    terraria_dir_base: /opt/terraria/
+    terraria_dir_current:  "{{ terraria_dir_base }}current"
+    terraria_dir_logs: "{{ terraria_dir_base }}logs/"
+    terraria_dir_version: "{{ terraria_dir_base }}{{ terraria_version }}"
+    terraria_dir_worlds: "{{ terraria_dir_base }}worlds"
+    terraria_download_url: https://terraria.org/system/dedicated_servers/archives/000/000/038/original/terraria-server-1404.zip
+    terraria_bin: TerrariaServer.bin.x86_64
+
+    ### Terraria Server Settings
+    terraria_config:
+      world: "{{ terraria_dir_worlds }}/fry.wld"
+      autocreate: 1
+      worldname: fry
+      worldpath: "{{ terraria_dir_worlds }}"
+      port: 7778
+
+  tasks:
+      - name: Setup | Install Apt utilities
+        apt:
+          name: "{{ item }}"
+          state: present
+        loop:
+          - unzip
+          - screen
+
+      - name: Setup | create terraria user
+        user:
+          name: "{{ terraria_user }}"
+          shell: /bin/bash
+
+      - name: Setup | create terraria dirs
+        file:
+          path: "{{ item }}"
+          state: directory
+          owner: "{{ terraria_user }}"
+          group: "{{ terraria_user }}"
+        with_items:
+          - "{{ terraria_dir_base }}"
+          - "{{ terraria_dir_version }}"
+          - "{{ terraria_dir_worlds }}"
+
+      - name: Setup | Download terraria from offical site by url.
+        get_url:
+          url: "{{ terraria_download_url }}"
+          dest: "{{ terraria_dir_base }}terraria-{{ terraria_version }}.zip"
+
+      - name: Setup | Unzip terraria
+        unarchive:
+          src: "{{ terraria_dir_base }}terraria-{{ terraria_version }}.zip"
+          dest: "{{ terraria_dir_base }}"
+          remote_src: yes
+          owner: "{{ terraria_user }}"
+          group: "{{ terraria_user }}"
+
+      - name: Setup | Link unzipped version to 'terraria_dir_current'
+        file:
+          src: "{{ terraria_dir_version }}/Linux"
+          dest: "{{ terraria_dir_current }}"
+          state: link
+          force: yes
+          owner: "{{ terraria_user }}"
+          group: "{{ terraria_user }}"
+          
+      - name: Setup | Ensure server biniary is executable
+        file:
+          path: "{{ terraria_dir_current }}/{{ terraria_bin }}"
+          mode: '0755'
+
+      - name: Config | setup server config file
+        template:
+          src: serverconfig.txt.j2
+          dest: "{{ terraria_dir_worlds }}/serverconfig.txt"
+          owner: "{{ terraria_user }}"
+          group: "{{ terraria_user }}"
+          mode: '0644'
+
+
