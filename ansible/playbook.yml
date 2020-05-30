@@ -20,7 +20,7 @@
       autocreate: 1
       worldname: fry
       worldpath: "{{ terraria_dir_worlds }}"
-      port: 7778
+      port: 7777
 
   tasks:
       - name: Setup | Install Apt utilities
