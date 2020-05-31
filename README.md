@@ -35,7 +35,10 @@ chris@pop-os:~/code/terraria$ vagrant ssh
 vagrant@ubuntu-bionic:~$ sudo -i
 root
 ```
-<script id="asciicast-VGJFCbXpXVOkO9N87XIEVoTCV" src="https://asciinema.org/a/VGJFCbXpXVOkO9N87XIEVoTCV.js" async></script>
+
+[![asciicast](https://asciinema.org/a/VGJFCbXpXVOkO9N87XIEVoTCV.svg)](https://asciinema.org/a/VGJFCbXpXVOkO9N87XIEVoTCV)
+
+
 
 ### other notes. 
 
