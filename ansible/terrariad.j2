@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 send="`printf \"$*\r\"`"
-attach='script /dev/null -qc "screen -r terraria"'
+attach='script /dev/null -qc "screen -r terraria_{{ terraria_config.worldname }}"'
 inject="screen -S terraria_{{ terraria_config.worldname }} -X stuff $send"
 
 if [ "$1" = "attach" ] ; then cmd="$attach" ; else cmd="$inject" ; fi
