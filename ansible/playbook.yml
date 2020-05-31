@@ -77,9 +77,33 @@
       - name: Config | setup server config file
         template:
           src: serverconfig.txt.j2
-          dest: "{{ terraria_dir_worlds }}/serverconfig.txt"
+          dest: "{{ terraria_dir_worlds }}/{{ terraria_config.worldname }}.txt"
           owner: "{{ terraria_user }}"
           group: "{{ terraria_user }}"
           mode: '0644'
 
+      - name: Config | setup systemd config
+        template:
+          src: terraria.service.j2
+          dest: "/etc/systemd/system/terraria_{{ terraria_config.worldname }}.service"
+          owner: root
+          group: root
+          mode: '0644'
 
+      - name: Config | setup systemd control script
+        template:
+          src: terrariad.j2
+          dest: "/usr/local/bin/terrariad_{{ terraria_config.worldname }}"
+          owner: root
+          group: root
+          mode: '0777'
+
+      - name: config | Enable the systemd service
+        service:
+          name: terraria_{{ terraria_config.worldname }}.service
+          enabled: yes
+
+      - name: config | Start the systemd service
+        service:
+          name: terraria_{{ terraria_config.worldname }}.service
+          state: started

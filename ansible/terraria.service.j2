@@ -1,0 +1,15 @@
+
+## {{ ansible_managed }}
+
+[Unit]
+Description=server daemon for terraria {{ terraria_config.worldname }}
+
+[Service]
+Type=forking
+User={{ terraria_user }}
+KillMode=none
+ExecStart=/usr/bin/screen -dmS terraria_{{ terraria_config.worldname }} /bin/bash -c "{{ terraria_dir_current }}/{{ terraria_bin }} -config {{ terraria_dir_worlds }}/{{ terraria_config.worldname }}.txt"
+ExecStop=/usr/local/bin/terrariad_{{ terraria_config.worldname }} exit
+
+[Install]
+WantedBy=multi-user.target
