@@ -29,11 +29,14 @@ Going to try and keep the requirements pretty light.  I'm going to be using pop!
 ```shell
 chris@pop-os:~/code/terraria$ vagrant up
 Bringing machine 'default' up with 'virtualbox' provider...
-<output_omitted> vagrant setup and provision process
+<output_omitted>
 chris@pop-os:~/code/terraria$ vagrant ssh 
-<output_omitted> logging into the vm
-vagrant@ubuntu-bionic:~$ cd /opt/ansible/
+<output_omitted>
+vagrant@ubuntu-bionic:~$ sudo -i
+root
 ```
+
+[![asciicast](https://asciinema.org/a/VGJFCbXpXVOkO9N87XIEVoTCV.svg)](https://asciinema.org/a/VGJFCbXpXVOkO9N87XIEVoTCV)
 
 ### other notes. 
 
